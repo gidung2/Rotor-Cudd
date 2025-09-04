@@ -1625,13 +1625,13 @@ void Rotor::Search(int nbThread, std::vector<int> gpuId, std::vector<int> gridSi
 					time_t now = time(NULL);
 					ctimeBuff = ctime(&now);
 					FILE* ptrFile = fopen("Rotor-Cuda_Continue.bat", "w+");
-					fprintf(ptrFile, ":loop \n");
-					fprintf(ptrFile, "%s\n", stroka.c_str());
-					fprintf(ptrFile, "goto :loop \n");
-					fprintf(ptrFile, "created: %s", ctimeBuff);
-					fprintf(ptrFile, "%" PRIu64 "\n", count);
-					fprintf(ptrFile, "To continue correctly, DO NOT change the parameters in this file! \n");
-					fprintf(ptrFile, "If you no longer need the continuation, DELETE this file! \n");
+					fprintf(ptrFile, ":loop ");
+					fprintf(ptrFile, "\r %s", stroka.c_str());
+					fprintf(ptrFile, "goto :loop ");
+					fprintf(ptrFile, "\r created: %s", ctimeBuff);
+					fprintf(ptrFile, "%" PRIu64, count);
+					fprintf(ptrFile, "To continue correctly, DO NOT change the parameters in this file! ");
+					fprintf(ptrFile, "If you no longer need the continuation, DELETE this file! ");
 					fclose(ptrFile);
 					minuty = 0;
 				}
@@ -1767,7 +1767,7 @@ void Rotor::Search(int nbThread, std::vector<int> gpuId, std::vector<int> gridSi
 		
 		if (years88 > 300) {
 
-			if (display > 1) {
+			if (display > 0) {
 
 				if (years88 > 0) {
 
