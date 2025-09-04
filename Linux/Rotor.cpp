@@ -1767,7 +1767,7 @@ void Rotor::Search(int nbThread, std::vector<int> gpuId, std::vector<int> gridSi
 		
 		if (years88 > 300) {
 
-			if (display > 0) {
+			if (display > 1) {
 
 				if (years88 > 0) {
 
