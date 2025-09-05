@@ -16,7 +16,6 @@
 #include <stdio.h>
 #include <stdio.h>
 #include <time.h>
-#ifndef WIN64
 #include <pthread.h>
 #endif
 
@@ -69,9 +68,6 @@ Rotor::Rotor(const std::string& inputFile, int compMode, int searchMode, int coi
 		exit(1);
 	}
 
-#ifdef WIN64
-	_fseeki64(wfd, 0, SEEK_END);
-	N = _ftelli64(wfd);
 #else
 	fseek(wfd, 0, SEEK_END);
 	N = ftell(wfd);
@@ -327,8 +323,6 @@ double log1(double x)
 void Rotor::output(std::string addr, std::string pAddr, std::string pAddrHex, std::string pubKey)
 {
 
-#ifdef WIN64
-	WaitForSingleObject(ghMutex, INFINITE);
 #else
 	pthread_mutex_lock(&ghMutex);
 #endif
@@ -370,8 +364,6 @@ void Rotor::output(std::string addr, std::string pAddr, std::string pAddrHex, st
 	if (needToClose)
 		fclose(f);
 
-#ifdef WIN64
-	ReleaseMutex(ghMutex);
 #else
 	pthread_mutex_unlock(&ghMutex);
 #endif
@@ -456,8 +448,7 @@ bool Rotor::checkPrivKeyX(Int& key, int32_t incr, bool mode)
 
 // ----------------------------------------------------------------------------
 
-#ifdef WIN64
-DWORD WINAPI _FindKeyCPU(LPVOID lpParam)
+
 {
 #else
 void* _FindKeyCPU(void* lpParam)
@@ -468,8 +459,6 @@ void* _FindKeyCPU(void* lpParam)
 	return 0;
 }
 
-#ifdef WIN64
-DWORD WINAPI _FindKeyGPU(LPVOID lpParam)
 {
 #else
 void* _FindKeyGPU(void* lpParam)
@@ -1521,10 +1510,6 @@ void Rotor::Search(int nbThread, std::vector<int> gpuId, std::vector<int> gridSi
 		}
 		
 
-#ifdef WIN64
-		DWORD thread_id;
-		CreateThread(NULL, 0, _FindKeyCPU, (void*)(params + i), 0, &thread_id);
-		ghMutex = CreateMutex(NULL, FALSE, NULL);
 #else
 		pthread_t thread_id;
 		pthread_create(&thread_id, NULL, &_FindKeyCPU, (void*)(params + i));
@@ -1552,9 +1537,6 @@ void Rotor::Search(int nbThread, std::vector<int> gpuId, std::vector<int> gridSi
 		
 
 
-#ifdef WIN64
-		DWORD thread_id;
-		CreateThread(NULL, 0, _FindKeyGPU, (void*)(params + (nbCPUThread + i)), 0, &thread_id);
 #else
 		pthread_t thread_id;
 		pthread_create(&thread_id, NULL, &_FindKeyGPU, (void*)(params + (nbCPUThread + i)));
