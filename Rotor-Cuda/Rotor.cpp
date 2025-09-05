@@ -1755,7 +1755,7 @@ void Rotor::Search(int nbThread, std::vector<int> gpuId, std::vector<int> gridSi
 
 					if (nbit2 < 1) {
 
-						if (rKey > 0) {
+						if (rKey < 0) {
 
 							if (isAlive(params)) {
 
@@ -1814,7 +1814,7 @@ void Rotor::Search(int nbThread, std::vector<int> gpuId, std::vector<int> gridSi
 					}
 					else {
 
-						if (rKey > 0) {
+						if (rKey < 0) {
 							if (isAlive(params)) {
 
 								if (avgGpuKeyRate > 1000000000) {
@@ -1878,7 +1878,7 @@ void Rotor::Search(int nbThread, std::vector<int> gpuId, std::vector<int> gridSi
 
 						if (nbit2 < 1) {
 
-							if (rKey > 0) {
+							if (rKey < 0) {
 
 								if (isAlive(params)) {
 
@@ -1940,7 +1940,7 @@ void Rotor::Search(int nbThread, std::vector<int> gpuId, std::vector<int> gridSi
 			}
 		}
 		
-		if (rKey > 0) {
+		if (rKey < 0) {
 			if ((count - lastrKey) > (1000000000 * rKey)) {
 				// rKey request
 				rKeyRequest(params);
